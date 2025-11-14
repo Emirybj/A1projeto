@@ -2,6 +2,7 @@ package com.example.a1projeto.data.repository
 
 import com.example.a1projeto.data.local.Playlist
 import com.example.a1projeto.data.local.PlaylistSongCrossRef
+import com.example.a1projeto.data.local.PlaylistWithSongs
 import com.example.a1projeto.data.local.SongCache
 import com.example.a1projeto.data.local.dao.PlaylistDao
 import com.example.a1projeto.data.remote.DeezerApiService
@@ -21,6 +22,8 @@ class PlaylistRepositoryImpl(
         return dao.searchPlaylistByName(query)
     }
 
+
+
     override suspend fun insertPlaylist(playlist: Playlist) {
         dao.insertPlaylist(playlist)
     }
@@ -28,6 +31,8 @@ class PlaylistRepositoryImpl(
     override suspend fun deletePlaylist(playlistId: Long) {
         dao.deletePlaylist(playlistId)
     }
+
+
 
 
     override suspend fun searchApiForSong(query: String): List<SongCache> {
@@ -66,4 +71,15 @@ class PlaylistRepositoryImpl(
         )
         dao.insertPlaylistSongCrossRef(crossRef)
     }
+
+    // --- Implementações da Tela 2 (Murilo) ---
+    override fun getPlaylistWithSongs(playlistId: Long): Flow<PlaylistWithSongs?> {
+        return dao.getPlaylistWithSongs(playlistId)
+    }
+
+    override suspend fun deleteSongFromPlaylist(playlistId: Long, songApiId: String) {
+        dao.deleteSongFromPlaylist(playlistId, songApiId)
+    }
+
+
 }
