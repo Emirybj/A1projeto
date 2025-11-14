@@ -73,4 +73,25 @@ O banco de dados utiliza um relacionamento Muitos-para-Muitos (N-N), implementad
 3.  **Tela 2:** Clique no botão flutuante **`♪`** (Nota Musical).
 4.  **Tela 3:** Digite uma busca (ex: "Stray Kids") e aguarde os resultados da API.
 5.  **Adicionar:** Clique em **Add** ao lado de uma música. O app volta para a Tela 2.
-6.  **Verificação:** A música adicionada deve aparecer na lista da playlist "Kpo".
+6.  **Verificação:** A música adicionada deve aparecer na lista da playlist "Kpop".
+
+### 5. Diagrama de Navegação (Fluxo do Usuário)
+
+O aplicativo utiliza o padrão Single Activity com Navigation Compose.
+
+![Diagrama de Navegação] (docs/navegacao.png)
+
+| Tela | Rota | Recebe Argumento? |
+| :--- | :--- | :--- |
+| **Tela 1: Lista Principal** | `playlist_list_screen` | Não |
+| **Tela 2: Detalhes** | `playlist_details_screen/{playlistId}` | Sim (`playlistId`) |
+| **Tela 3: Busca na API** | `song_search_screen/{playlistId}` | Sim (`playlistId`) |
+
+### 7. Estrutura do Banco de Dados (Diagrama ER)
+
+O projeto utiliza 3 entidades com um relacionamento Muitos-para-Muitos (N:N).
+
+![Diagrama de Entidade-Relacionamento (Room)] (docs/banco_dados.png)
+
+*O relacionamento é mediado pela tabela **PlaylistSongCrossRef**, que armazena a `ordem` das músicas dentro de cada playlist.*
+
