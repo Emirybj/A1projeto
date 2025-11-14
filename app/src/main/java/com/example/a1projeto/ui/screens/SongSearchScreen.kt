@@ -17,21 +17,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-// --- IMPORTS NOVOS ---
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api // <-- Importar anotação
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton // <-- Importar IconButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar // <-- Importar TopAppBar
-// --- FIM DOS IMPORTS NOVOS ---
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -52,8 +50,7 @@ import com.example.a1projeto.data.local.SongCache
 import com.example.a1projeto.viewmodel.SongSearchViewModel
 import com.example.a1projeto.viewmodel.ViewModelFactory
 
-// --- ANOTAÇÃO NOVA ---
-// (Necessária para usar o Scaffold, Card, OutlinedTextField e TopAppBar)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SongSearchScreen(navController: NavController, playlistId: Long) {
@@ -78,7 +75,7 @@ fun SongSearchScreen(navController: NavController, playlistId: Long) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        // --- CÓDIGO NOVO ---
+
         // Adiciona a barra superior
         topBar = {
             TopAppBar(
@@ -96,19 +93,13 @@ fun SongSearchScreen(navController: NavController, playlistId: Long) {
                 }
             )
         }
-        // --- FIM DO CÓDIGO NOVO ---
+
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {
-            // Este Text não é mais necessário, o título está na TopAppBar
-            // Text(
-            //     text = "Buscar Músicas (Playlist ID: $playlistId)",
-            //     style = MaterialTheme.typography.headlineMedium,
-            //     modifier = Modifier.padding(bottom = 16.dp)
-            // )
 
             //TextField para busca
             OutlinedTextField(
@@ -155,7 +146,6 @@ fun SongSearchScreen(navController: NavController, playlistId: Long) {
     }
 }
 
-// --- ANOTAÇÃO NOVA ---
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SongSearchResultItem(

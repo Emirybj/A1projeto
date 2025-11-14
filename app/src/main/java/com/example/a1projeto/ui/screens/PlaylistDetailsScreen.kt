@@ -13,13 +13,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip // <-- IMPORTAR
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage // <-- IMPORTAR
+import coil.compose.AsyncImage
 import com.example.a1projeto.PlaylistApplication
 import com.example.a1projeto.ui.Screen
 import com.example.a1projeto.viewmodel.DetailsViewModel
