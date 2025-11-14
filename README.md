@@ -87,7 +87,7 @@ O aplicativo utiliza o padrão Single Activity com Navigation Compose.
 | **Tela 2: Detalhes** | `playlist_details_screen/{playlistId}` | Sim (`playlistId`) |
 | **Tela 3: Busca na API** | `song_search_screen/{playlistId}` | Sim (`playlistId`) |
 
-### 7. Estrutura do Banco de Dados (Diagrama ER)
+### 6. Estrutura do Banco de Dados (Diagrama ER)
 
 O projeto utiliza 3 entidades com um relacionamento Muitos-para-Muitos (N:N).
 
