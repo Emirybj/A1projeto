@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.seuprojeto.a1projeto"
+    namespace = "com.example.a1projeto"
     compileSdk = 34
 
     defaultConfig {

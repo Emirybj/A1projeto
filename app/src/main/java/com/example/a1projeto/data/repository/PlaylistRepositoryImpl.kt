@@ -2,6 +2,7 @@ package com.example.a1projeto.data.repository
 
 import com.example.a1projeto.data.local.Playlist
 import com.example.a1projeto.data.local.PlaylistSongCrossRef
+import com.example.a1projeto.data.local.PlaylistWithSongs
 import com.example.a1projeto.data.local.SongCache
 import com.example.a1projeto.data.local.dao.PlaylistDao
 import com.example.a1projeto.data.remote.DeezerApiService
@@ -29,7 +30,6 @@ class PlaylistRepositoryImpl(
         dao.deletePlaylist(playlistId)
     }
 
-
     override suspend fun searchApiForSong(query: String): List<SongCache> {
         return try {
             // Chama a API
@@ -52,10 +52,10 @@ class PlaylistRepositoryImpl(
     }
 
     override suspend fun addSongToPlaylist(song: SongCache, playlistId: Long) {
-        // 1. Garante que a música exista na tabela de cache local
+        // Garante que a música exista na tabela de cache local
         dao.insertSong(song)
 
-        // 2. Descobre a próxima "ordem"
+        // Descobre a próxima "ordem"
         val ordem = dao.getSongCountInPlaylist(playlistId)
 
         // 3. Cria a relação
@@ -65,5 +65,14 @@ class PlaylistRepositoryImpl(
             ordem = ordem + 1 // Adiciona como a última música
         )
         dao.insertPlaylistSongCrossRef(crossRef)
+    }
+
+    // Implementações da Tela 2
+    override fun getPlaylistWithSongs(playlistId: Long): Flow<PlaylistWithSongs?> {
+        return dao.getPlaylistWithSongs(playlistId)
+    }
+
+    override suspend fun deleteSongFromPlaylist(playlistId: Long, songApiId: String) {
+        dao.deleteSongFromPlaylist(playlistId, songApiId)
     }
 }

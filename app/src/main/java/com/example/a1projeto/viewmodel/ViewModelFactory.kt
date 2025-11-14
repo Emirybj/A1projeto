@@ -20,6 +20,11 @@ class ViewModelFactory(
             return SongSearchViewModel(repository) as T
         }
 
+        if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return DetailsViewModel(repository) as T
+        }
+
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
 }

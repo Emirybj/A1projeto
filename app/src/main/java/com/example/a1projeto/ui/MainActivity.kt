@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             A1projetoTheme {
+
                 AppNavigation()
 
             }

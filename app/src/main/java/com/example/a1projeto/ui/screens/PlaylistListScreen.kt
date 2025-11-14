@@ -2,25 +2,13 @@ package com.example.a1projeto.ui.screens
 
 import android.app.Application
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MusicNote
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,65 +21,97 @@ import com.example.a1projeto.ui.Screen
 import com.example.a1projeto.viewmodel.PlaylistViewModel
 import com.example.a1projeto.viewmodel.ViewModelFactory
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlaylistScreen(navController: NavController) {
-    // Pega o ViewModel usando a Factory do AppContainer
-    val application = LocalContext.current.applicationContext as PlaylistApplication
+fun PlaylistListScreen(navController: NavController) {
+
+    // Conexão com ViewModel e estados
+    val context = LocalContext.current
+    val application = context.applicationContext as PlaylistApplication
     val viewModel: PlaylistViewModel = viewModel(
         factory = ViewModelFactory(application.container.playlistRepository)
     )
-
-    // Coleta o UiState
     val uiState by viewModel.uiState.collectAsState()
+    var newPlaylistName by remember { mutableStateOf("") }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        LazyColumn(
+        topBar = { TopAppBar(title = { Text("Minhas Playlists") }) }
+    ) { padding ->
+        Column(
             modifier = Modifier
-                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(padding)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
-                Text(
-                    text = "Minhas Playlists",
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-            }
-            items(uiState.allPlaylists) { playlist ->
-                PlaylistItem(
-                    playlist = playlist,
-                    onClick = {
-                        // Navega para detalhes passando o ID
-                        navController.navigate(Screen.PlaylistDetails.createRoute(playlist.playlistId))
-                    }
-                )
-            }
-        }
-    }
-}
 
-@Composable
-fun PlaylistItem(playlist: Playlist, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(4.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.MusicNote,
-                contentDescription = "Playlist Icon",
-                modifier = Modifier.padding(end = 16.dp)
+            // Campos de Criar e Buscar
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = newPlaylistName,
+                    onValueChange = { newPlaylistName = it },
+                    label = { Text("Nova Playlist") },
+                    modifier = Modifier.weight(1f)
+                )
+                Button(onClick = {
+                    viewModel.insertPlaylist(newPlaylistName)
+                    newPlaylistName = ""
+                }) { Text("Criar") }
+            }
+
+            OutlinedTextField(
+                value = uiState.searchQuery,
+                onValueChange = { query -> viewModel.onSearchQueryChange(query) },
+                label = { Text("Buscar playlists por nome...") },
+                modifier = Modifier.fillMaxWidth()
             )
-            Column {
-                Text(text = playlist.nome, style = MaterialTheme.typography.titleMedium)
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(uiState.allPlaylists) { playlist ->
+                        Card(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        navController.navigate(
+                                            Screen.PlaylistDetails.withArgs(playlist.playlistId)
+                                        )
+                                    }
+                                    .padding(16.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = playlist.nome,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                IconButton(onClick = {
+                                    viewModel.deletePlaylist(playlist)
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = "Excluir Playlist"
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (uiState.allPlaylists.isEmpty() && uiState.searchQuery.isNotEmpty()) {
+                    Text(
+                        text = "Nenhuma playlist encontrada com o nome \"${uiState.searchQuery}\"",
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+
             }
         }
     }
