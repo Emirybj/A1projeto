@@ -10,7 +10,14 @@ class ViewModelFactory(
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PlaylistViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
             return PlaylistViewModel(repository) as T
+        }
+
+        // Adiciona o construtor para o novo ViewModel
+        if (modelClass.isAssignableFrom(SongSearchViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return SongSearchViewModel(repository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

@@ -14,5 +14,11 @@ interface PlaylistRepository {
 
     suspend fun deletePlaylist(playlistId: Long)
 
-    // TODO: Adicionar as outras funções do DAO (insertSong, etc.) quando forem necessárias
+    /** Busca músicas na API externa (Deezer) */
+    suspend fun searchApiForSong(query: String): List<SongCache>
+
+    /** Adiciona uma música (do cache) a uma playlist específica */
+    suspend fun addSongToPlaylist(song: SongCache, playlistId: Long)
+
+
 }

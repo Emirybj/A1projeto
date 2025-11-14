@@ -2,6 +2,7 @@ package com.example.a1projeto.data.local
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index // ✅ 1. Adicione este import
 
 @Entity(
     tableName = "playlist_song_cross_ref",
@@ -14,7 +15,7 @@ import androidx.room.ForeignKey
             childColumns = ["playlistId"],
             onDelete = ForeignKey.CASCADE // Se apagar a playlist, apaga a referência
         ),
-    // Chave estrangeira para a tabela de Músicas (SongCache)
+        // Chave estrangeira para a tabela de Músicas (SongCache)
         ForeignKey(
             entity = SongCache::class,
             parentColumns = ["songApiId"],
@@ -22,10 +23,11 @@ import androidx.room.ForeignKey
             onDelete = ForeignKey.CASCADE // Se apagar a música do cache, apaga a referência
 
         )
+    ],
+    indices = [
+        Index(value = ["songApiId"])
     ]
 )
-
-
 data class PlaylistSongCrossRef(
     val playlistId: Long,
     val songApiId: String,

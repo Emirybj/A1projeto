@@ -1,15 +1,14 @@
 package com.example.a1projeto.data.local.dao
 
-import android.icu.text.StringSearch
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+
 import com.example.a1projeto.data.local.Playlist
 import com.example.a1projeto.data.local.PlaylistSongCrossRef
 import com.example.a1projeto.data.local.SongCache
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 @Dao
 interface PlaylistDao {
@@ -46,4 +45,7 @@ interface PlaylistDao {
     @Query("DELETE FROM playlist_song_cross_ref WHERE playlistId = :playlistId AND songApiId = :songApiId")
     suspend fun deleteSongFromPlaylist(playlistId: Long, songApiId: String)
 
+    // Busca a contagem de músicas em uma playlist (para saber a 'ordem')
+    @Query("SELECT COUNT(*) FROM playlist_song_cross_ref WHERE playlistId = :playlistId")
+    suspend fun getSongCountInPlaylist(playlistId: Long): Int
 }
